@@ -3,7 +3,7 @@
  * 
  * <Please put your name and userid here>
  * Zhouzh
- * 28/32
+ * 32/36
  * bits.c - Source file with your solutions to the Lab.
  *          This is the file you will hand in to your instructor.
  *
@@ -290,15 +290,17 @@ int isLessOrEqual(int x, int y) {
  *   Rating: 4 
  */
 int logicalNeg(int x) {
-	// 7 ops
-	// if 0 then 1
-	// 1. if pos, shift right to make neg
-	// 2. then or x
-	int op1 = ~x + 1;
-	int op2 = (x >> 31) | (op1 >> 31);
-	int op3 = ~op2 + 1;
-	return op3;
-}
+     // 7 ops
+     // if 0 then 1
+     // 1. if pos, shift right to make neg
+     // 2. then or x
+     int op0 = x >> 31;
+     int op1 = ~x + 1;
+     int op2 = op0 | (op1 >> 31);
+     int op3 = ~op2 + 2;
+     int op4 = (op0 + 1) & 1;
+     return op3 & op4;
+}              
 /* howManyBits - return the minimum number of bits required to represent x in
  *             two's complement
  *  Examples: howManyBits(12) = 5
