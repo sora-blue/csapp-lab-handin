@@ -1,0 +1,51 @@
+	.pos 0
+	irmovq stack, %rsp
+	call main
+	halt
+# %rdi: long *src
+# %rsi: long *dest
+# %rdx: long len
+# shall i save caller's registers?
+# if so, which ones?
+copy_block:
+	pushq %r8
+	pushq %r9
+	pushq %rcx
+	xorq %rax, %rax
+	irmovq $8, %r8
+	irmovq $1, %r9
+
+c_judge:
+	andq %rdx, %rdx
+	jle c_end
+
+	mrmovq (%rdi), %rcx
+	addq %r8, %rdi
+	rmmovq %rcx, (%rsi)
+	addq %r8, %rsi
+	xorq %rcx, %rax
+	subq %r9, %rdx
+	jmp c_judge
+c_end:
+	popq %rcx
+	popq %r9
+	popq %r8
+	ret
+main:
+	irmovq src, %rdi
+	irmovq dest, %rsi
+	irmovq $3, %rdx
+	call copy_block
+	ret
+.align 8
+src:
+	.quad 0x00a
+	.quad 0x0b0
+	.quad 0xc00
+dest:
+	.quad 0x111
+	.quad 0x222
+	.quad 0x333
+	.pos 0x400
+stack:
+# Zhou Zh

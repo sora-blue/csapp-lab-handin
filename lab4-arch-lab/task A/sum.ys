@@ -1,0 +1,36 @@
+# Zhou Zh
+	.pos 0
+	irmovq stack, %rsp
+	call main
+	halt
+sum_list:
+	mrmovq 8(%rsp), %rcx
+	xorq %rax, %rax
+loop_judge:
+	andq %rcx, %rcx
+ 	je loop_end
+loop_body:
+  	mrmovq (%rcx), %rdx
+  	addq %rdx, %rax
+  	mrmovq 8(%rcx), %rcx
+  	jmp loop_judge
+loop_end:
+  	ret
+	.align 8
+ele1:
+	.quad 0x00a
+	.quad ele2
+ele2:
+	.quad 0x0b0
+	.quad ele3
+ele3:
+	.quad 0xc00
+	.quad 0
+main:
+	irmovq ele1, %rdx
+	pushq %rdx
+	call sum_list
+	ret
+
+	.pos 0x400
+stack:

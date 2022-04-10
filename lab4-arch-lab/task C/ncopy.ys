@@ -1,0 +1,140 @@
+#/* $begin ncopy-ys */
+##################################################################
+# ncopy.ys - Copy a src block of len words to dst.
+# Return the number of positive words (>0) contained in src.
+#
+# Include your name and ID here.
+#  Zhouzh
+# Describe how and why you modified the baseline code.
+# 1. iaddq could save at least 3 instructions
+# 2. during loop, len > 0 is often the case
+# 3. 8x loop unroll -> 4x -> 1x
+# 4. other mod on instructions,
+#         such as add a Loop_Before to save 2 instructions,
+#                 use iaddq to update status to save 1 instruction, etc.
+##################################################################
+# Do not modify this portion
+# Function prologue.
+# %rdi = src, %rsi = dst, %rdx = len
+ncopy:
+
+##################################################################
+# You can modify this portion
+	# Loop header
+	xorq %rax,%rax		# count = 0;
+High_Header:                                                   
+	iaddq $-8, %rdx
+	jge High_Loop
+	iaddq $4, %rdx
+	jge Low_Loop
+	iaddq $4, %rdx
+Header:
+	jg Loop
+	ret
+Loop_Before:
+	iaddq $8, %rdi		# src++
+	iaddq $8, %rsi		# dst++
+Loop:	mrmovq (%rdi), %r10	# read val from src...
+	rmmovq %r10, (%rsi)	# ...and store it to dst
+	andq %r10, %r10
+	jle Npos		# if so, goto Npos:
+	iaddq $1, %rax
+Npos:
+	iaddq $-1, %rdx
+	jg Loop_Before			# if so, goto Loop:
+	ret
+Low_Loop:
+Low_Pos_0:
+	mrmovq (%rdi), %r10
+	rmmovq %r10, (%rsi)
+	andq %r10, %r10
+	jle Low_Pos_1
+	iaddq $1, %rax
+Low_Pos_1:
+	mrmovq 8(%rdi), %r10
+	rmmovq %r10, 8(%rsi)
+	andq %r10, %r10
+	jle Low_Pos_2
+	iaddq $1, %rax
+Low_Pos_2:
+	mrmovq 16(%rdi), %r10
+	rmmovq %r10, 16(%rsi)
+	andq %r10, %r10
+	jle Low_Pos_3
+	iaddq $1, %rax
+Low_Pos_3:
+	mrmovq 24(%rdi), %r10
+	rmmovq %r10, 24(%rsi)
+	andq %r10, %r10
+	jle Low_Npos
+	iaddq $1, %rax
+Low_Npos:
+	iaddq $32, %rdi
+	iaddq $32, %rsi
+	andq %rdx, %rdx
+	jg Loop
+	ret
+High_Loop:
+High_Pos_X_0:
+	mrmovq (%rdi), %r10
+	rmmovq %r10, (%rsi)
+	andq %r10, %r10
+	jle High_Pos_X_1
+	iaddq $1, %rax
+High_Pos_X_1:
+	mrmovq 8(%rdi), %r10
+	rmmovq %r10, 8(%rsi)
+	andq %r10, %r10
+	jle High_Pos_X_2
+	iaddq $1, %rax
+High_Pos_X_2:
+	mrmovq 16(%rdi), %r10
+	rmmovq %r10, 16(%rsi)
+	andq %r10, %r10
+	jle High_Pos_X_3
+	iaddq $1, %rax
+High_Pos_X_3:
+	mrmovq 24(%rdi), %r10
+	rmmovq %r10, 24(%rsi)
+	andq %r10, %r10
+	jle High_Pos_X_4
+	iaddq $1, %rax
+High_Pos_X_4:
+	mrmovq 32(%rdi), %r10
+	rmmovq %r10, 32(%rsi)
+	andq %r10, %r10
+	jle High_Pos_X_5
+	iaddq $1, %rax
+High_Pos_X_5:
+	mrmovq 40(%rdi), %r10
+	rmmovq %r10, 40(%rsi)
+	andq %r10, %r10
+	jle High_Pos_X_6
+	iaddq $1, %rax
+High_Pos_X_6:
+	mrmovq 48(%rdi), %r10
+	rmmovq %r10, 48(%rsi)
+	andq %r10, %r10
+	jle High_Pos_X_7
+	iaddq $1, %rax
+High_Pos_X_7:
+	mrmovq 56(%rdi), %r10
+	rmmovq %r10, 56(%rsi)
+	andq %r10, %r10
+	jle High_Npos
+	iaddq $1, %rax
+High_Npos:
+	iaddq $64, %rdi  
+	iaddq $64, %rsi
+	jmp High_Header		
+	
+##################################################################
+# Do not modify the following section of code
+# Function epilogue.
+Done:
+	ret
+##################################################################
+# Keep the following label at the end of your function
+End:
+#/* $end ncopy-ys */
+
