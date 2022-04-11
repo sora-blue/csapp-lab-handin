@@ -1,9 +1,9 @@
  /* $rsp = 0x5561dbe0 */
  /* cookie = 0x59b997fa */
  /* 4017ec <touch2> */
- /* stack is executable ???*/
+ /* stack is executable ??? */
  /* .text??? */
- /* %rbi = 0x5561dc78*/
+ /* %rbi = 0x5561dc78 */
 
 bf fa 97 b9 59 68 ec 17
 40 00 c3 00 00 00 00 00
